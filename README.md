@@ -85,6 +85,41 @@ o	Arduino 5V to Breadboard 5V Rail: Connect a wire from the Arduino 5V pin to th
   
 2.	Save the Circuit: Click "Save" to keep your circuit design and code for future use.
 ## PROGRAM
+```
+const int analogIn = A0;
+int humiditysensorOutput = 0;
+// Defining Variables
+int RawValue= 0;
+double Voltage = 0;
+double tempC = 0;
+double tempF = 0;
+void setup(){  
+  Serial.begin(9600);
+  pinMode(A1, INPUT);
+}
+void loop(){
+  RawValue = analogRead(analogIn);
+  Voltage = (RawValue / 1023.0) * 5000; // 5000 to get millivots.
+  tempC = (Voltage-500) * 0.1; // 500 is the offset
+  tempF = (tempC * 1.8) + 32; // convert to F  
+  Serial.print("Raw Value = " );                  
+  Serial.print(RawValue);      
+  Serial.print("\t milli volts = ");
+  Serial.print(Voltage,0); //
+  Serial.print("\t Temperature in C = ");
+  Serial.print(tempC,1);
+  Serial.print("\t Temperature in F = ");
+  Serial.println(tempF,1);
+  humiditysensorOutput = analogRead(A1);
+  Serial.print("Humidity: "); // Printing out Humidity Percentage
+  Serial.print(map(humiditysensorOutput, 0, 1023, 10, 70));
+  Serial.println("%");
+  delay(5000);  //iterate every 5 seconds
+}
+```
 ## OUTPUT
+<img width="654" height="351" alt="image" src="https://github.com/user-attachments/assets/9bad2a31-efb0-41d7-b688-5704ef14393d" />
+<img width="689" height="115" alt="image" src="https://github.com/user-attachments/assets/da8069d9-72ea-4542-886c-d00d35b8e813" />
+
 ## RESULT:
 The temperature and humidity values are measured using DHT11/DHT22/TMP36 sensor with Arduino UNO Board/ESP-32 and Simulated using Tinker CAD.
